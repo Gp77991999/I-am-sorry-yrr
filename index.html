@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise WebApp</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #fff0f5;
+            overflow: hidden;
+        }
+        button {
+            background-color: pink;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            position: absolute;
+            transition: 0.3s;
+        }
+        .hidden {
+            display: none;
+        }
+        #maan-gayi {
+            background-color: #ff66b2;
+            left: 45%;
+            top: 50%;
+            transition: transform 0.3s ease-in-out;
+        }
+        #maan-gayi:hover {
+            transform: scale(1.1);
+        }
+        #abhi-naraz {
+            background-color: #ff0000;
+            left: 45%;
+            top: 60%;
+            transition: transform 0.3s ease-in-out, left 0.5s, top 0.5s;
+        }
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffccff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            display: none;
+            font-size: 22px;
+            font-weight: bold;
+            width: 300px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+        #hug-animation {
+            width: 120px;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Tu na mujhe naraz achi nhi lagti hai, isliye i am sorry maan ja na yarr 😔</h2>
+
+    <audio id="bg-music" loop>
+        <source src="background.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="smile-btn">yaha pr click karo😊</button>
+
+    <p id="smile-message" class="hidden">maan jao na jana yrr😍</p>
+
+    <h3 id="game-title" class="hidden">Game Time! 🎮</h3>
+    <button id="maan-gayi" class="hidden">haa Maan    gayi 😍</button>
+    <button id="abhi-naraz" class="hidden">Abhi bhi naraz hu 😡</button>
+
+    <p id="secret-message" class="hidden">💖 Tujhse zyada pyaari , iss duniya me koi nahi, tu is duniya ki sabse best girl hai! I LOVE YOU 💖</p>
+
+    <img id="hug-animation" src="https://media.tenor.com/Lz8XnJbPUZsAAAAM/anime-hug.gif" alt="Hug Animation">
+
+    <div id="popup" class="popup"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var audio = document.getElementById("bg-music");
+            var smileBtn = document.getElementById("smile-btn");
+            var smileMsg = document.getElementById("smile-message");
+            var gameTitle = document.getElementById("game-title");
+            var maanGayi = document.getElementById("maan-gayi");
+            var abhiNaraz = document.getElementById("abhi-naraz");
+            var secretMessage = document.getElementById("secret-message");
+            var hugAnimation = document.getElementById("hug-animation");
+            var popup = document.getElementById("popup");
+
+            let usedMessages = [];
+            const narazMessages = [
+                "😭 Mujhse aise naraz mat ho!",
+                "💔 Dil tut gaya mera...",
+                "😞 ab to maan jao yrr...",
+                "😞 sorry ",
+                "😞 Kabhi toh maan jao...",
+                "❣️😔I LOVE YOU MAAN JANA 😔❣️...",
+                "😔 maan ja na yrr... ",
+                "😞 i am really sorry...",
+                "🍫 Lo chocolate kha lo!",
+                "😢 Ab ho gyi na galti yr ab maaf bhi kr do hame?",
+                "🥺 Kitni dino se maanane ki koshish kar raha hu!",
+                "🌸 Tere bina sab suna suna lagta hai!",
+                "🌹 Tum naraz hoti ho toh pura din ajeeb lagta hai!",
+                "🫂 Lo ek pyara sa hug le lo!",
+                "💌 tu jo kahe gi vo karuga, maan jao na!",
+                "✨ Tumhari hasi meri duniya hai!"
+            ];
+
+            smileBtn.addEventListener("click", function() {
+                smileBtn.style.display = "none";
+                smileMsg.classList.remove("hidden");
+                gameTitle.classList.remove("hidden");
+                maanGayi.classList.remove("hidden");
+                abhiNaraz.classList.remove("hidden");
+
+                if (audio.paused) {
+                    audio.play().catch(error => console.log(error));
+                }
+            });
+
+            maanGayi.addEventListener("click", function() {
+                secretMessage.classList.remove("hidden");
+                hugAnimation.style.display = "block";
+                maanGayi.disabled = true;
+                abhiNaraz.style.display = "none";
+            });
+
+            abhiNaraz.addEventListener("click", function() {
+                if (usedMessages.length === narazMessages.length) {
+                    usedMessages = [];
+                }
+                let availableMessages = narazMessages.filter(msg => !usedMessages.includes(msg));
+                let randomMsg = availableMessages[Math.floor(Math.random() * availableMessages.length)];
+                usedMessages.push(randomMsg);
+                showPopup(randomMsg);
+                moveButton(abhiNaraz);
+            });
+
+            function showPopup(message) {
+                popup.innerText = message;
+                popup.style.display = "block";
+                setTimeout(() => {
+                    popup.style.display = "none";
+                }, Math.random() * (15000 - 10000) + 10000);
+            }
+
+            function moveButton(button) {
+                var x = Math.random() * (window.innerWidth - 120);
+                var y = Math.random() * (window.innerHeight - 60);
+                button.style.left = `${x}px`;
+                button.style.top = `${y}px`;
+                button.style.transform = "scale(1.2)";
+                setTimeout(() => {
+                    button.style.transform = "scale(1)";
+                }, 300);
+            }
+        });
+    </script>
+
+</body>
+</html>

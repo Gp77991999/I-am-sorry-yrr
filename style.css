@@ -1,0 +1,14 @@
+/* style.css */ body { font-family: Arial, sans-serif; text-align: center; background-color: #f9f9f9; padding: 50px; } .container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); display: inline-block; } button { padding: 10px 20px; margin: 10px; font-size: 18px; border: none; cursor: pointer; border-radius: 5px; } #smileBtn { background-color: #28a745; color: white; } #sadBtn { background-color: #dc3545; color: white; position: absolute; } #happyBtn { background-color: #007bff; color: white; } .hidden { display: none; }
+
+/* script.js */ const smileBtn = document.getElementById("smileBtn"); const options = document.getElementById("options"); const sadBtn = document.getElementById("sadBtn"); const happyBtn = document.getElementById("happyBtn"); const output = document.getElementById("output"); const bgMusic = document.getElementById("bgMusic");
+
+const messages = [ "Tumhari hasi duniya ki sabse khoobsurat cheez hai 😊", "Agar tum hanso na to dil udas ho jata hai 😔", "Tumhare bina sab suna suna lagta hai 💔", "Jab tum muskurao to lagta hai jaise duniya roshan ho gayi ✨", "Tumhare bina jeene ka koi matlab nahi 😭" ];
+
+let usedMessages = new Set();
+
+smileBtn.addEventListener("click", () => { bgMusic.play(); options.classList.remove("hidden"); smileBtn.classList.add("hidden"); });
+
+sadBtn.addEventListener("click", () => { if (usedMessages.size === messages.length) usedMessages.clear(); let randomMessage; do { randomMessage = messages[Math.floor(Math.random() * messages.length)]; } while (usedMessages.has(randomMessage)); usedMessages.add(randomMessage); output.innerHTML = <p>${randomMessage}</p>; sadBtn.style.left = Math.random() * 70 + "%"; sadBtn.style.top = Math.random() * 70 + "%"; });
+
+happyBtn.addEventListener("click", () => { sadBtn.style.display = "none"; output.innerHTML = "<h2>Yay! Chocolate time 🍫💖</h2>"; });
+
